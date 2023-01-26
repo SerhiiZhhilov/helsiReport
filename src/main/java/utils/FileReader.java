@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FileReader {
-
+    private static final String workingPath = System.getProperty("user.dir");
 
     public static FileDialog openDialog(MainForm mainForm) {
         FileDialog fd = new FileDialog(mainForm, "Choose a file", FileDialog.LOAD);
-        fd.setDirectory("D:\\");
+        fd.setDirectory(workingPath);
         fd.setFile("*.txt");
         fd.setVisible(true);
         return fd;
@@ -29,20 +29,20 @@ public class FileReader {
 
     public static FileDialog saveDialog(MainForm mainForm) {
         FileDialog fd = new FileDialog(mainForm, "Choose a file", FileDialog.SAVE);
-        fd.setDirectory("D:\\");
+        fd.setDirectory(workingPath);
         fd.setFile("All_Patients.xlsx");
         fd.setVisible(true);
         return fd;
     }
 
     public static List<String> readFile(File file) {
-        if (file == null || file.getAbsolutePath() == null || file.getAbsolutePath().isEmpty())
+        if (file == null || file.getAbsolutePath().isEmpty())
             return Collections.emptyList();
 
         return readFile(file.getAbsolutePath());
     }
 
-    public static List<String> readFile(String fileName) {
+    private static List<String> readFile(String fileName) {
         List<String> content;
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
             content = stream.collect(Collectors.toList());
